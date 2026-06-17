@@ -36,15 +36,6 @@ def get_current_messages():
     return st.session_state.chats[st.session_state.current_chat_id]
 
 
-def stream_text(text):
-    placeholder = st.empty()
-    full_text = ""
-
-    for word in text.split():
-        full_text += word + " "
-        placeholder.markdown(full_text)
-        time.sleep(0.02)
-
 
 with st.sidebar:
     st.header("Chats")
@@ -112,16 +103,23 @@ if user_input:
         st.markdown(user_input)
 
     with st.chat_message("assistant"):
+        result = ""
+        response_box = st.empty()
+
         with st.spinner("Searching Google and analyzing..."):
             try:
-                result = st.session_state.agent.run(
+                for chunk in st.session_state.agent.run(
                     user_input=user_input,
                     chat_history=messages
-                )
+                ):
+                    result += chunk
+                    response_box.markdown(result)
+
             except Exception as e:
                 result = f"Something went wrong: `{e}`"
+                st.error(result)
 
-        if "|" in result and "---" in result:
-            st.markdown(result)
-        else:
-            stream_text(result)
+    messages.append({
+        "role": "assistant",
+        "content": result
+    })

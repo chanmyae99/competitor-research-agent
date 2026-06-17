@@ -42,51 +42,49 @@ class CompetitorResearchAgent:
     def run(self, user_input: str, chat_history=None):
         history_text = self.build_history_text(chat_history)
 
+        input_list = [
+            {
+                "role": "user",
+                "content": f"""
+    Conversation history:
+    {history_text}
+
+    Latest user message:
+    {user_input}
+
+    When you need current competitor information, call the google_search tool.
+    """
+            }
+        ]
+
         first_response = self.client.responses.create(
             model="gpt-4.1-mini",
             instructions=SYSTEM_PROMPT,
-            input=f"""
-Conversation history:
-{history_text}
-
-Latest user message:
-{user_input}
-
-Use the conversation history to resolve references like:
-- it
-- them
-- that company
-- previous company
-
-When you need current competitor information, call the google_search tool.
-""",
+            input=input_list,
             tools=self.tools
         )
 
-        tool_outputs = []
+        input_list += first_response.output
 
         for item in first_response.output:
             if item.type == "function_call" and item.name == "google_search":
-                arguments = json.loads(item.arguments)
-                query = arguments["query"]
+                args = json.loads(item.arguments)
+                query = args["query"]
 
                 search_result = google_search(query)
 
-                tool_outputs.append(
-                    {
-                        "type": "function_call_output",
-                        "call_id": item.call_id,
-                        "output": json.dumps(search_result)
-                    }
-                )
+                input_list.append({
+                    "type": "function_call_output",
+                    "call_id": item.call_id,
+                    "output": json.dumps(search_result)
+                })
 
-        if tool_outputs:
-            final_response = self.client.responses.create(
-                model="gpt-4.1-mini",
-                instructions=SYSTEM_PROMPT,
-                input=first_response.output + tool_outputs
-            )
-
-            return final_response.output_text
-
-        return first_response.output_text
+        with self.client.responses.stream(
+            model="gpt-4.1-mini",
+            instructions=SYSTEM_PROMPT,
+            input=input_list,
+            tools=self.tools
+        ) as stream:
+            for event in stream:
+                if event.type == "response.output_text.delta":
+                    yield event.delta
