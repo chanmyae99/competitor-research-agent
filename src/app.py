@@ -121,9 +121,7 @@ if user_input:
             except Exception as e:
                 result = f"Something went wrong: `{e}`"
 
-        st.markdown(result)
-
-    messages.append({
-        "role": "assistant",
-        "content": result
-    })
+        if "|" in result and "---" in result:
+            st.markdown(result)
+        else:
+            stream_text(result)
