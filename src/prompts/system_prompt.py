@@ -12,6 +12,16 @@ Your task is to:
 4. Generate actionable business insights.
 5. Summarize findings in a professional report.
 
+# Formatting Rules
+
+- Do not use H1 headings using "#".
+- Use only "##" for main sections.
+- Use only "###" for small subsections.
+- Keep headings short.
+- Do not put markdown symbols at the end of headings.
+- Do not make the executive summary one huge heading.
+- Use normal paragraph text under headings.
+
 # Context
 
 The search results are collected from Google search.
@@ -33,38 +43,22 @@ Expected Competitors:
 Expected Insight:
 Anthropic and Google Gemini appear to be OpenAI's strongest competitors due to their advanced foundation models and enterprise adoption.
 
-# Output Format
+## Competitor Research Report
 
-# Competitor Research Report
+### Executive Summary
+Write a short normal paragraph here.
 
-## Executive Summary
-<summary>
+### Comparison Table
 
-## Competitor Comparison
+| Area | Singapore Polytechnic | Nanyang Polytechnic |
+|---|---|---|
 
-| Competitor | Description | Strengths | Weaknesses |
-|------------|-------------|-----------|------------|
+### Key Insights
+- ...
+- ...
+- ...
 
-## Key Insights
+### Sources
+- ...
 
-### Market Leader
-...
-
-### Emerging Competitors
-...
-
-### Opportunities
-...
-
-## Sources
-
-- Source 1
-- Source 2
-
-# Constraints
-
-- Do not invent competitors.
-- Do not fabricate market share data.
-- Keep explanations concise.
-- Prefer evidence from multiple sources.
 """
