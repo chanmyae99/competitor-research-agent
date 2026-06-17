@@ -6,50 +6,9 @@ from agent import CompetitorResearchAgent
 
 load_dotenv()
 
-st.set_page_config(
-    page_title="Competitor Research Agent",
-    page_icon="🔎",
-    layout="wide"
-)
-
-st.markdown(
-    """
-    <style>
-    .sticky-header {
-        position: fixed;
-        top: 3.5rem;
-        left: 26rem;
-        right: 0;
-        background-color: #0E1117;
-        z-index: 999;
-        padding: 1rem 3rem;
-        border-bottom: 1px solid #262730;
-    }
-
-    .sticky-header h1 {
-        margin: 0;
-        color: white;
-        font-size: 2rem;
-    }
-
-    .sticky-header p {
-        margin: 0.3rem 0 0 0;
-        color: #A0A0A0;
-        font-size: 1rem;
-    }
-
-    .main .block-container {
-        padding-top: 10rem;
-    }
-    </style>
-
-    <div class="sticky-header">
-        <h1>🔎 Competitor Research Agent</h1>
-        <p>Google Search + OpenAI competitor analysis</p>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+st.title("🔎 Competitor Research Agent")
+st.caption("Google Search + OpenAI competitor analysis")
+st.divider()
 
 # Initialize agent
 if "agent" not in st.session_state:

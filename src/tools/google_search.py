@@ -1,10 +1,5 @@
-import os
 import requests
-from dotenv import load_dotenv
-
-load_dotenv()
-
-SERPER_API_KEY = os.getenv("SERPER_API_KEY")
+from config import SERPER_API_KEY
 
 
 def google_search(query: str):

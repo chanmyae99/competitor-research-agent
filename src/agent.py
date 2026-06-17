@@ -1,12 +1,15 @@
 import json
 from openai import OpenAI
+from config import OPENAI_API_KEY
 from tools.google_search import google_search
 from prompts.system_prompt import SYSTEM_PROMPT
 
 
 class CompetitorResearchAgent:
     def __init__(self):
-        self.client = OpenAI()
+        self.client = OpenAI(
+            api_key=OPENAI_API_KEY
+        )
 
     def build_history_text(self, chat_history):
         history_text = ""
